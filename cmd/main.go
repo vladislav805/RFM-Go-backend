@@ -5,7 +5,9 @@ import (
 	"fm-go-bin/internal/radio"
 	"fm-go-bin/internal/radio_state"
 	"fmt"
-	"time"
+	"log"
+	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -53,5 +55,38 @@ func main() {
 		}
 	})
 
+	srv(&state, tuner)
+
 	<-channel
+}
+
+func srv(state *radio_state.RadioGlobalState, tuner radio.RadioInterface) {
+	http.Handle("/get", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jsonContent, err := json.Marshal(state)
+
+		if err == nil {
+			w.Header().Add("content-type", "application/json; charset=utf-8")
+			w.Write(jsonContent)
+		}
+	}))
+
+	http.Handle("/set/{kHz}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		kHz, err := strconv.Atoi(r.PathValue("kHz"))
+
+		if err != nil {
+			w.Write([]byte(fmt.Sprintf("%v", err)))
+			return
+		}
+
+		err = tuner.SetFrequency(uint32(kHz))
+
+		result := err == nil
+
+		jsonContent, _ := json.Marshal(result)
+
+		w.Header().Add("content-type", "application/json; charset=utf-8")
+		w.Write(jsonContent)
+	}))
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
