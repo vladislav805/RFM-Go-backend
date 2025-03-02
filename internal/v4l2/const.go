@@ -1,0 +1,64 @@
+package v4l2
+
+// V4L2
+const (
+	VIDIOC_QUERYCAP       = 0x80685600
+	VIDIOC_REQBUFS        = 0xc0145608
+	VIDIOC_DQBUF          = 0xc0585611
+	VIDIOC_G_CTRL         = 0xc008561b
+	VIDIOC_S_CTRL         = 0xc008561c
+	VIDIOC_G_FREQUENCY    = 0xc02c5638
+	VIDIOC_S_FREQUENCY    = 0x402c5639
+	VIDIOC_G_TUNER        = 0xc054561d
+	VIDIOC_S_TUNER        = 0x4054561e
+	VIDIOC_S_HW_FREQ_SEEK = 0x40305652
+)
+
+const (
+	CID_PRIVATE_BASE = 0x8000000
+)
+
+const BUF_TYPE_PRIVATE = 0x80
+
+// Memory type
+const (
+	MEMORY_MMAP    = 1
+	MEMORY_USERPTR = 2
+)
+
+// Tuner state
+const (
+	TUNER_STATE_OFF = 0
+	TUNER_STATE_RX  = 1
+	TUNER_STATE_TX  = 2
+)
+
+const FREQ_LOWER = 87500
+const FREQ_UPPER = 108000
+
+type RdsSync uint
+
+const (
+	FM_RDS_NOT_SYNCED RdsSync = 0x0
+	FM_RDS_SYNCED     RdsSync = 0x1
+)
+
+const (
+	FM_RX_MONO   = 0x0
+	FM_RX_STEREO = 0x1
+)
+
+const (
+	V4L2_TUNER_RADIO = 1
+)
+
+const (
+	SEARCH_SEEK uint32 = iota
+	SEARCH_SCAN
+	SEARCH_SCAN_FOR_STRONG
+	SEARCH_SCAN_FOR_WEAK
+	SEARCH_RDS_SEEK_PTY
+	SEARCH_RDS_SCAN_PTY
+	SEARCH_RDS_SEEK_PI
+	SEARCH_RDS_AF_JUMP
+)
