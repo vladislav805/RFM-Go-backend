@@ -1,15 +1,15 @@
-package radio
+package tavarua
 
 import (
-	"fm-go-bin/internal/radio/tavarua"
+	"fm-go-bin/internal/rds"
 	"fmt"
+	"strings"
 )
 
-func (tuner RadioTuner) ReadRT() (string, uint16, uint8, error) {
-	buf, len, err := tuner.readRawBuffer(tavarua.BUF_RT_RDS)
+func (tuner TavaruaRadio) readRT() (rds.RT, rds.PI, rds.PTY, error) {
+	buf, len, err := tuner.readRawBuffer(BUF_RT_RDS)
 
 	if err != nil {
-		fmt.Printf("err(RT): %v", err)
 		return "", 0, 0, err
 	}
 
@@ -30,13 +30,25 @@ func (tuner RadioTuner) ReadRT() (string, uint16, uint8, error) {
 	length := buf[0] + shift
 
 	// Radio text
-	rt := string(buf[shift : shift+length])
+	rt := rds.RT(
+		cleanRT(
+			string(
+				buf[shift : shift+length],
+			),
+		),
+	)
 
 	// Program Type
-	pty := (buf[1] & 0x1F)
+	pty := rds.PTY(buf[1] & 0x1F)
 
 	// Program ID
-	pi := ((uint16(buf[2]) & 0xFF) << 8) | (uint16(buf[3]) & 0xFF)
+	pi := rds.PI(((uint16(buf[2]) & 0xFF) << 8) | (uint16(buf[3]) & 0xFF))
 
-	return string(rt), pi, pty, nil
+	return rt, pi, pty, nil
+}
+
+func cleanRT(val string) string {
+	result, _, _ := strings.Cut(val, "\u0000")
+
+	return result
 }

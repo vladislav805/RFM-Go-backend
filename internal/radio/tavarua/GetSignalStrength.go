@@ -1,6 +1,6 @@
-package radio
+package tavarua
 
-func (tuner RadioTuner) GetSignalStrength() (uint32, error) {
+func (tuner TavaruaRadio) GetSignalStrength() (uint32, error) {
 	info, err := tuner.getTuner()
 
 	if err == nil {

@@ -1,14 +1,13 @@
-package radio
+package tavarua
 
 import (
-	"fm-go-bin/internal/radio/tavarua"
 	"fm-go-bin/internal/v4l2"
 	"unsafe"
 )
 
-func (tuner RadioTuner) GetRdsGroupOptions() (uint8, error) {
+func (tuner TavaruaRadio) getRdsGroupOptions() (uint8, error) {
 	control := v4l2.Control{
-		Id: tavarua.CID_RDSGROUP_PROC,
+		Id: CID_RDS_GROUP_PROC,
 	}
 
 	err := tuner.Control.Ioctl(

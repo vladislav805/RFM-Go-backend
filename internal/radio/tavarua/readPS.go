@@ -1,15 +1,14 @@
-package radio
+package tavarua
 
 import (
-	"fm-go-bin/internal/radio/tavarua"
+	"fm-go-bin/internal/rds"
 	"fmt"
 )
 
-func (tuner RadioTuner) ReadPS() (string, uint16, uint8, error) {
-	buf, len, err := tuner.readRawBuffer(tavarua.BUF_PS_RDS)
+func (tuner TavaruaRadio) readPS() (rds.PS, rds.PI, rds.PTY, error) {
+	buf, len, err := tuner.readRawBuffer(BUF_PS_RDS)
 
 	if err != nil {
-		fmt.Printf("err(PS): %v", err)
 		return "", 0, 0, err
 	}
 
@@ -30,13 +29,13 @@ func (tuner RadioTuner) ReadPS() (string, uint16, uint8, error) {
 	psLength := numOfPs * 8  // 0-120
 
 	// Program Service
-	ps := string(buf[5 : 5+psLength])
+	ps := rds.PS(buf[5 : 5+psLength])
 
 	// Program Type
-	pty := (buf[1] & 0x1F)
+	pty := rds.PTY(buf[1] & 0x1F)
 
 	// Program ID
-	pi := ((uint16(buf[2]) & 0xFF) << 8) | (uint16(buf[3]) & 0xFF)
+	pi := rds.PI(((uint16(buf[2]) & 0xFF) << 8) | (uint16(buf[3]) & 0xFF))
 
 	return ps, pi, pty, nil
 }

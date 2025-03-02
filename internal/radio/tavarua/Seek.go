@@ -1,20 +1,19 @@
-package radio
+package tavarua
 
 import (
-	"fm-go-bin/internal/radio/tavarua"
 	"fm-go-bin/internal/v4l2"
 	"fmt"
 	"unsafe"
 )
 
-func (tuner RadioTuner) Seek(direction int8) error {
+func (tuner TavaruaRadio) Seek(direction int8) error {
 	// вперёд - 1; назад - 0
 	if direction != 1 {
 		direction = 0
 	}
 
 	err := tuner.Control.Set(
-		tavarua.CID_SRCHMODE,
+		CID_SEARCH_MODE,
 		v4l2.SEARCH_SEEK,
 	)
 
@@ -24,12 +23,12 @@ func (tuner RadioTuner) Seek(direction int8) error {
 	}
 
 	err = tuner.Control.Set(
-		tavarua.CID_SCANDWELL,
+		CID_SCAN_DWELL,
 		7,
 	)
 
 	if err != nil {
-		print("err(seek): set SCANDWELL failed: %v\n", err)
+		fmt.Printf("err(seek): set SCANDWELL failed: %v\n", err)
 		return err
 	}
 
@@ -44,7 +43,7 @@ func (tuner RadioTuner) Seek(direction int8) error {
 	)
 
 	if err != nil {
-		print("err(seek): search failed: %v\n", err)
+		fmt.Printf("err(seek): search failed: %v\n", err)
 		return err
 	}
 

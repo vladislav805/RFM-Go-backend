@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fm-go-bin/internal/env"
 	"fmt"
 	"os/exec"
 )
@@ -11,14 +12,18 @@ func GetProp(name string) (string, error) {
 	out, err := cmd.Output()
 
 	if err != nil {
-		fmt.Printf("GetProp(%s)err = %v\n", name, err)
+		if env.IsVerbose {
+			fmt.Printf("GetProp(%s)err = %v\n", name, err)
+		}
 		return "", err
 	}
 
 	// Значение возвращается вместе с \n на конце
 	value := string(out[:len(out)-1])
 
-	fmt.Printf("GetProp(%s)out = %v\n", name, value)
+	if env.IsVerbose {
+		fmt.Printf("GetProp(%s)out = %v\n", name, value)
+	}
 
 	return value, nil
 }
@@ -34,7 +39,9 @@ func SetProp(name, value string) error {
 
 	exitCode := cmd.ProcessState.ExitCode()
 
-	fmt.Printf("SetProp(%s, %s) = %d, %v\n", name, value, exitCode, err)
+	if env.IsVerbose {
+		fmt.Printf("SetProp(%s, %s) = %d, %v\n", name, value, exitCode, err)
+	}
 
 	if exitCode > 0 {
 		return fmt.Errorf("SetProp: exit code %d", exitCode)

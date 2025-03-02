@@ -1,24 +1,23 @@
-package radio
+package tavarua
 
 import (
-	"fm-go-bin/internal/radio/tavarua"
+	"fm-go-bin/internal/rds"
 	"fmt"
 )
 
-func (tuner RadioTuner) ReadAF() ([]uint32, error) {
-	buf, len, err := tuner.readRawBuffer(tavarua.BUF_AF_LIST)
+func (tuner TavaruaRadio) readAF() (rds.AF, error) {
+	buf, len, err := tuner.readRawBuffer(BUF_AF_LIST)
 
 	if err != nil {
-		fmt.Printf("err(AF): %v", err)
-		return []uint32{}, err
+		return rds.AF{}, err
 	}
 
 	if len == 0 {
-		return []uint32{}, fmt.Errorf("invalid rt buffer length (%d)", len)
+		return rds.AF{}, fmt.Errorf("invalid rt buffer length (%d)", len)
 	}
 
 	// buf[4] | (buf[5] << 8)
-	// buf[6] = count of frequencies
+	// buf[6] = length of list
 	// buf[($index * 4) + 6 + (1...4)] with shift = one frequency (uint32)
 	size := int(buf[6] & 0xff)
 

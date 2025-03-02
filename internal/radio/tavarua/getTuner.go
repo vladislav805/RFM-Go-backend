@@ -1,11 +1,11 @@
-package radio
+package tavarua
 
 import (
 	"fm-go-bin/internal/v4l2"
 	"unsafe"
 )
 
-func (tuner RadioTuner) getTuner() (v4l2.Tuner, error) {
+func (tuner TavaruaRadio) getTuner() (v4l2.Tuner, error) {
 	info := v4l2.Tuner{}
 
 	err := tuner.Control.Ioctl(

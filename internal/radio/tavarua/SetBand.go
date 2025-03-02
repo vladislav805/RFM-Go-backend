@@ -1,4 +1,4 @@
-package radio
+package tavarua
 
 import (
 	"fm-go-bin/internal/v4l2"
@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-func (tuner RadioTuner) SetBand(lower uint32, upper uint32) error {
+func (tuner TavaruaRadio) SetBand(lower uint32, upper uint32) error {
 	ctl := &v4l2.Tuner{
 		Index:     0,
 		Signal:    0,

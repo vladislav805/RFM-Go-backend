@@ -1,4 +1,4 @@
-package radio
+package tavarua
 
 import (
 	"fm-go-bin/internal/v4l2"
@@ -7,7 +7,7 @@ import (
 	"unsafe"
 )
 
-func (tuner RadioTuner) GetFrequency() (uint32, error) {
+func (tuner TavaruaRadio) GetFrequency() (uint32, error) {
 	freq_struct := v4l2.Frequency{
 		Type: v4l2.V4L2_TUNER_RADIO,
 	}

@@ -46,7 +46,7 @@ type Tuner struct {
 type Buffer struct {
 	Index     uint32
 	Type      uint32
-	Bytesused uint32
+	BytesUsed uint32
 	Flags     uint32
 	Field     uint32
 	Timeval   struct {
@@ -56,7 +56,7 @@ type Buffer struct {
 	Timecode  uint32
 	Sequence  uint32
 	Memory    uint32
-	Userptr   unsafe.Pointer
+	UserPtr   unsafe.Pointer
 	Length    uint32
 	Reserved2 uint32
 	Reserved  uint32
