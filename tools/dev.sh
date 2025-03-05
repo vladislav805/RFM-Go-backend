@@ -11,4 +11,4 @@ else
     echo "🟥🟥🟥 Error"
 fi
 
-
+# $ANDROID_HOME/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang internal/radio/helium/test.c -o main
