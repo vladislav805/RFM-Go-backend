@@ -7,11 +7,8 @@ import (
 
 func GetInstance() (RadioInterface, error) {
 	if tavarua.Test() {
-		ctl, err := tavarua.New()
-
-		if err != nil {
-			return nil, err
-		}
+		return tavarua.New()
+	}
 
 		return ctl, nil
 	}
